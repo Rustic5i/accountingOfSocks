@@ -3,8 +3,11 @@ package com.example.accountingofsocks.model;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
-
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -19,12 +22,17 @@ public class Socks {
     private Long id;
 
     @Column
+    @NotBlank
     private String color;
 
+    @Min(0)
+    @Max(100)
     @Column
     private Byte cottonPart; //процентное содержание хлопка в составе носков, целое число от 0 до 100 (например, 30, 18, 42);
 
     @Column
+    @NotNull
+    @Min(value = 1,message = "Количество пар носков не может быть меньше 0")
     private int quantity; //количество пар носков, целое число больше 0.
 
     @Override

@@ -123,4 +123,16 @@ class SocksServiceImlTest {
         List<Socks> cottonPart = service.findAllByColorAndCottonPart("Синий", Operation.lessThan, (byte) 20);
         System.out.println(cottonPart);
     }
+
+    @Test
+    void getNumberSocksByColorAndCottonPart(){
+        for (int i = 0; i < colorList.size(); i++) {
+            Socks socks = new Socks();
+            socks.setColor("Черный");
+            socks.setCottonPart((byte) ((byte) +i * 10));
+            socks.setQuantity(i * 10 + 1);
+            service.save(socks);
+        }
+        service.getNumberSocksByColorAndCottonPart("Черный",Operation.lessThan, (byte) 100);
+    }
 }

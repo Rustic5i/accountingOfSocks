@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.OptionalInt;
 
 @Service
 public class SocksServiceIml implements SocksService {
@@ -60,5 +61,15 @@ public class SocksServiceIml implements SocksService {
             case equal -> dao.findAllByColorAndCottonPartEquals(color, cottonPart);
             case moreThan -> dao.findAllByColorAndCottonPartGreaterThan(color, cottonPart);
         };
+    }
+
+    @Override
+    public OptionalInt getNumberSocksByColorAndCottonPart(String color, Operation operation, byte cottonPart) {
+        List<Socks> socksList = findAllByColorAndCottonPart(color, operation, cottonPart);
+
+        return socksList.stream()
+                .mapToInt(socks -> socks.getQuantity())
+                .reduce((acc, x) -> acc + x);
+
     }
 }
