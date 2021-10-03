@@ -1,5 +1,7 @@
 package com.example.accountingofsocks.service.serviceIml;
 
+import com.example.accountingofsocks.exception.NullQuantityPointerException;
+import com.example.accountingofsocks.exception.QuantitySocksOutOfBoundsException;
 import com.example.accountingofsocks.model.Operation;
 import com.example.accountingofsocks.model.Socks;
 import com.example.accountingofsocks.repository.SocksDao;
@@ -20,13 +22,35 @@ public class SocksServiceIml implements SocksService {
     }
 
     @Override
-    public Socks save(Socks socks) {
+    public Socks save(Socks socks) throws NullQuantityPointerException {
+        List<Socks> socksList = dao.findAllByColorAndCottonPartEquals(socks.getColor(), socks.getCottonPart());
+
+        if (socksList.size() != 0) {
+            Socks actualSocks = socksList.get(0);
+            actualSocks.setQuantity(actualSocks.getQuantity() + socks.getQuantity());
+            return dao.save(actualSocks);
+        } else if (socks.getQuantity() < 1) {
+            throw new NullQuantityPointerException("Нельзя поставить на учет, нулевое количество носков ");
+        }
         return dao.save(socks);
     }
 
     @Override
-    public void deleteAllByColorAndCottonPart(Socks socks) {
-
+    public void deleteAllByColorAndCottonPart(Socks socks) throws QuantitySocksOutOfBoundsException {
+        List<Socks> socksList = dao.findAllByColorAndCottonPartEquals(socks.getColor(), socks.getCottonPart());
+        if (socksList.size() != 0) {
+            Socks actualSocks = socksList.get(0);
+            if (actualSocks.getQuantity() < socks.getQuantity()) {
+                throw new QuantitySocksOutOfBoundsException("Нельзя списать количество пар носков, больше чем есть на складе");
+            } else if (actualSocks.getQuantity() > socks.getQuantity()) {
+                actualSocks.setQuantity(actualSocks.getQuantity() - socks.getQuantity());
+                dao.save(actualSocks);
+            } else {
+                dao.delete(socks);
+            }
+        } else {
+            throw new QuantitySocksOutOfBoundsException("Нельзя списать со склада то, чего нет");
+        }
     }
 
     @Override
@@ -37,5 +61,4 @@ public class SocksServiceIml implements SocksService {
             case moreThan -> dao.findAllByColorAndCottonPartGreaterThan(color, cottonPart);
         };
     }
-
 }
