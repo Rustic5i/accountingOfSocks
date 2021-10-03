@@ -22,18 +22,18 @@ public class Socks {
     private Long id;
 
     @Column
-    @NotBlank
+    @NotBlank(message = "Не указан цвет носков")
     private String color;
 
-    @Min(0)
-    @Max(100)
+    @Min(value = 0, message = "Процент хлопка не может быть отрицательным")
+    @Max(value = 100,message = "Процента хлопка не может быть больше 100%")
     @Column
-    private Byte cottonPart; //процентное содержание хлопка в составе носков, целое число от 0 до 100 (например, 30, 18, 42);
+    private Byte cottonPart;
 
     @Column
-    @NotNull
+    @NotNull(message = "Нельзя добавить или списать нулевое количество носков")
     @Min(value = 1,message = "Количество пар носков не может быть меньше 0")
-    private int quantity; //количество пар носков, целое число больше 0.
+    private int quantity;
 
     @Override
     public String toString() {

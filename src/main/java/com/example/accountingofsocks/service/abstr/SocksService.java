@@ -3,7 +3,6 @@ package com.example.accountingofsocks.service.abstr;
 import com.example.accountingofsocks.exception.QuantitySocksOutOfBoundsException;
 import com.example.accountingofsocks.model.Operation;
 import com.example.accountingofsocks.model.Socks;
-
 import java.util.List;
 import java.util.OptionalInt;
 

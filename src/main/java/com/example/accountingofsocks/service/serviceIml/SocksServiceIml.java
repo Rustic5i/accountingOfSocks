@@ -8,7 +8,6 @@ import com.example.accountingofsocks.repository.SocksDao;
 import com.example.accountingofsocks.service.abstr.SocksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.OptionalInt;
 
@@ -42,12 +41,12 @@ public class SocksServiceIml implements SocksService {
         if (socksList.size() != 0) {
             Socks actualSocks = socksList.get(0);
             if (actualSocks.getQuantity() < socks.getQuantity()) {
-                throw new QuantitySocksOutOfBoundsException("Нельзя списать количество пар носков, больше чем есть на складе");
+                throw new QuantitySocksOutOfBoundsException("Нельзя списать количество пар носков больше, чем есть на складе");
             } else if (actualSocks.getQuantity() > socks.getQuantity()) {
                 actualSocks.setQuantity(actualSocks.getQuantity() - socks.getQuantity());
                 dao.save(actualSocks);
             } else {
-                dao.delete(socks);
+                dao.delete(socksList.get(0));
             }
         } else {
             throw new QuantitySocksOutOfBoundsException("Нельзя списать со склада то, чего нет");

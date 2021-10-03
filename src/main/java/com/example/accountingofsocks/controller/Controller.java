@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.OptionalInt;
 
@@ -23,7 +24,7 @@ public class Controller {
 
     @PostMapping("/socks/income")
     ResponseEntity<String> income(@Valid @RequestBody Socks newSocks) {
-        Socks socks = service.save(newSocks);
+        service.save(newSocks);
         return new ResponseEntity<>("Удалось добавить приход", HttpStatus.OK);
     }
 
@@ -33,13 +34,14 @@ public class Controller {
         return ResponseEntity.ok("Списание " + socks.getQuantity() + " пар носков, прошла успешно ");
     }
 
-    @GetMapping("/api/socks")
+    @GetMapping("/socks")
     ResponseEntity<OptionalInt> getSocks(@RequestParam String color,
-                                     @RequestParam Operation operation,
-                                     @RequestParam byte cottonPart) {
+                                         @RequestParam Operation operation,
+                                         @RequestParam byte cottonPart) {
 
         OptionalInt socksCount = service.getNumberSocksByColorAndCottonPart(color, operation, cottonPart);
         return new ResponseEntity<>(socksCount, HttpStatus.OK);
 
     }
+
 }
