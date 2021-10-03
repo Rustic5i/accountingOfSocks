@@ -6,12 +6,16 @@ import com.example.accountingofsocks.service.abstr.SocksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.OptionalInt;
 
 @RestController
 @RequestMapping("/api")
+@Validated
 public class Controller {
 
     private SocksService service;
@@ -36,7 +40,7 @@ public class Controller {
     @GetMapping("/socks")
     ResponseEntity<OptionalInt> getSocks(@RequestParam String color,
                                          @RequestParam Operation operation,
-                                         @RequestParam byte cottonPart) {
+                                         @RequestParam @Min(0) @Max(100) byte cottonPart) {
 
         OptionalInt socksCount = service.getNumberSocksByColorAndCottonPart(color, operation, cottonPart);
         return new ResponseEntity<>(socksCount, HttpStatus.OK);

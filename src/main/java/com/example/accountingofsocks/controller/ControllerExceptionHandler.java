@@ -10,6 +10,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -46,6 +49,20 @@ public class ControllerExceptionHandler {
     ResponseEntity<SocksIncorrectData> handlerException (MissingServletRequestParameterException exception){
         SocksIncorrectData data = new SocksIncorrectData();
         data.setInfo("Параметры запроса отсутствуют или имеют некорректный формат;");
+        return new ResponseEntity<>(data,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    ResponseEntity<SocksIncorrectData> handlerException (MethodArgumentTypeMismatchException exception){
+        SocksIncorrectData data = new SocksIncorrectData();
+        data.setInfo("Параметры запроса отсутствуют или имеют некорректный формат;");
+        return new ResponseEntity<>(data,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    ResponseEntity<SocksIncorrectData> handlerException (ConstraintViolationException exception){
+        SocksIncorrectData data = new SocksIncorrectData();
+        data.setInfo("Процента хлопка не может быть больше 100% или меньше 0%");
         return new ResponseEntity<>(data,HttpStatus.BAD_REQUEST);
     }
 }
