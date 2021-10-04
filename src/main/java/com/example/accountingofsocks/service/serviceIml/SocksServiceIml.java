@@ -56,9 +56,9 @@ public class SocksServiceIml implements SocksService {
     @Override
     public List<Socks> findAllByColorAndCottonPart(String color, Operation operation, byte cottonPart) {
         return switch (operation) {
-            case lessThan -> dao.findAllByColorAndCottonPartIsLessThan(color, cottonPart);
-            case equal -> dao.findAllByColorAndCottonPartEquals(color, cottonPart);
-            case moreThan -> dao.findAllByColorAndCottonPartGreaterThan(color, cottonPart);
+            case LESSTHAN -> dao.findAllByColorAndCottonPartIsLessThan(color, cottonPart);
+            case EQUAL -> dao.findAllByColorAndCottonPartEquals(color, cottonPart);
+            case MORETHAN -> dao.findAllByColorAndCottonPartGreaterThan(color, cottonPart);
         };
     }
 

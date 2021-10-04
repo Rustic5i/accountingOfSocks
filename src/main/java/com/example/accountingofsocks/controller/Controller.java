@@ -1,5 +1,6 @@
 package com.example.accountingofsocks.controller;
 
+import com.example.accountingofsocks.exception.QuantitySocksOutOfBoundsException;
 import com.example.accountingofsocks.model.Operation;
 import com.example.accountingofsocks.model.Socks;
 import com.example.accountingofsocks.service.abstr.SocksService;
@@ -36,18 +37,20 @@ public class Controller {
     @PostMapping("/socks/outcome")
     ResponseEntity<Optional<Socks>> outcome(@Valid @RequestBody Socks socks) {
         service.deleteAllByColorAndCottonPart(socks);
-        List<Socks> actual = service.findAllByColorAndCottonPart(socks.getColor(), Operation.equal, socks.getCottonPart());
+        List<Socks> actual = service.findAllByColorAndCottonPart(socks.getColor(), Operation.EQUAL, socks.getCottonPart());
         return ResponseEntity.ok(actual.stream().findFirst());
     }
 
     @GetMapping("/socks")
     ResponseEntity<OptionalInt> getSocks(@RequestParam String color,
-                                         @RequestParam Operation operation,
+                                         @RequestParam String operation,
                                          @RequestParam @Min(0) @Max(100) byte cottonPart) {
-
-        OptionalInt socksCount = service.getNumberSocksByColorAndCottonPart(color, operation, cottonPart);
-        return new ResponseEntity<>(socksCount, HttpStatus.OK);
-
+        try {
+            Operation actual = Operation.valueOf(operation.toUpperCase());
+            OptionalInt socksCount = service.getNumberSocksByColorAndCottonPart(color, actual, cottonPart);
+            return new ResponseEntity<>(socksCount, HttpStatus.OK);
+        }catch (IllegalArgumentException e){
+            throw new QuantitySocksOutOfBoundsException("Параметры запроса отсутствуют или имеют некорректный формат");
+        }
     }
-
 }

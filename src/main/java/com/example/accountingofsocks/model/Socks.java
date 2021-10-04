@@ -8,6 +8,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -43,5 +44,18 @@ public class Socks {
                 ", cottonPart=" + cottonPart +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Socks socks = (Socks) o;
+        return Objects.equals(color, socks.color) && Objects.equals(cottonPart, socks.cottonPart);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, cottonPart);
     }
 }

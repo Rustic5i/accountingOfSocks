@@ -9,11 +9,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+@Transactional
+@TestPropertySource(locations = "classpath:application-test.properties")
 class SocksServiceImlTest {
 
     @Autowired
@@ -103,7 +108,7 @@ class SocksServiceImlTest {
         service.save(socks);
 
         service.deleteAllByColorAndCottonPart(socks);
-       List<Socks> socksList = service.findAllByColorAndCottonPart(socks.getColor(), Operation.equal, socks.getCottonPart());
+       List<Socks> socksList = service.findAllByColorAndCottonPart(socks.getColor(), Operation.EQUAL, socks.getCottonPart());
         Assertions.assertEquals(0,socksList.size());
     }
 
@@ -120,7 +125,7 @@ class SocksServiceImlTest {
             service.save(socks);
         }
 
-        List<Socks> cottonPart = service.findAllByColorAndCottonPart("Синий", Operation.lessThan, (byte) 20);
+        List<Socks> cottonPart = service.findAllByColorAndCottonPart("Синий", Operation.LESSTHAN, (byte) 20);
         System.out.println(cottonPart);
     }
 
@@ -133,6 +138,6 @@ class SocksServiceImlTest {
             socks.setQuantity(i * 10 + 1);
             service.save(socks);
         }
-        service.getNumberSocksByColorAndCottonPart("Черный",Operation.lessThan, (byte) 100);
+        service.getNumberSocksByColorAndCottonPart("Черный",Operation.LESSTHAN, (byte) 100);
     }
 }
