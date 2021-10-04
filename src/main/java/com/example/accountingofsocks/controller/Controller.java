@@ -8,9 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.List;
+import java.util.Optional;
 import java.util.OptionalInt;
 
 @RestController
@@ -26,15 +29,16 @@ public class Controller {
     }
 
     @PostMapping("/socks/income")
-    ResponseEntity<String> income(@Valid @RequestBody Socks newSocks) {
-        service.save(newSocks);
-        return new ResponseEntity<>("Удалось добавить приход", HttpStatus.OK);
+    ResponseEntity<Socks> income(@Valid @RequestBody Socks newSocks) {
+        Socks socks = service.save(newSocks);
+        return new ResponseEntity<>(socks, HttpStatus.OK);
     }
 
     @PostMapping("/socks/outcome")
-    ResponseEntity<String> outcome(@Valid @RequestBody Socks socks) {
+    ResponseEntity<Optional<Socks>> outcome(@Valid @RequestBody Socks socks) {
         service.deleteAllByColorAndCottonPart(socks);
-        return ResponseEntity.ok("Списание " + socks.getQuantity() + " пар носков, прошла успешно ");
+        List<Socks> actual = service.findAllByColorAndCottonPart(socks.getColor(), Operation.equal, socks.getCottonPart());
+        return ResponseEntity.ok(actual.stream().findFirst());
     }
 
     @GetMapping("/socks")
