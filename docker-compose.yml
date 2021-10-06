@@ -37,3 +37,4 @@ services:
 #      - POSTGRES_USER=root
 #      - POSTGRES_PASSWORD=root
 #      - POSTGRES_DB=accounting_for_socks
+#Примечание: очень часто нужно сохранить результат и сразу же выйти из vi, для этого можно просто набрать «:wq».
