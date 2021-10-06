@@ -11,8 +11,8 @@ public interface SocksService {
 
     void outcome(Socks socks) throws QuantitySocksOutOfBoundsException;
 
-    List<Socks> findAllByColorAndCottonPart(String color, Operation operation, byte cottonPart);
+    List<Socks> findByParameters(String color, Operation operation, byte cottonPart);
 
-    OptionalInt getNumberSocksByColorAndCottonPart(String color, Operation operation, byte cottonPart);
+    OptionalInt getNumberSocksByParameters(String color, Operation operation, byte cottonPart);
 
 }

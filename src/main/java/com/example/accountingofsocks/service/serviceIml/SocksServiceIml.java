@@ -54,7 +54,7 @@ public class SocksServiceIml implements SocksService {
     }
 
     @Override
-    public List<Socks> findAllByColorAndCottonPart(String color, Operation operation, byte cottonPart) {
+    public List<Socks> findByParameters(String color, Operation operation, byte cottonPart) {
         return switch (operation) {
             case LESSTHAN -> dao.findAllByColorAndCottonPartIsLessThan(color, cottonPart);
             case EQUAL -> dao.findAllByColorAndCottonPartEquals(color, cottonPart);
@@ -63,12 +63,11 @@ public class SocksServiceIml implements SocksService {
     }
 
     @Override
-    public OptionalInt getNumberSocksByColorAndCottonPart(String color, Operation operation, byte cottonPart) {
-        List<Socks> socksList = findAllByColorAndCottonPart(color, operation, cottonPart);
+    public OptionalInt getNumberSocksByParameters(String color, Operation operation, byte cottonPart) {
+        List<Socks> socksList = findByParameters(color, operation, cottonPart);
 
         return socksList.stream()
                 .mapToInt(socks -> socks.getQuantity())
                 .reduce((acc, x) -> acc + x);
-
     }
 }

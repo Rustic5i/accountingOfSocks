@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -37,17 +38,17 @@ public class Controller {
     @PostMapping("/socks/outcome")
     ResponseEntity<Optional<Socks>> outcome(@Valid @RequestBody Socks socks) {
         service.outcome(socks);
-        List<Socks> actual = service.findAllByColorAndCottonPart(socks.getColor(), Operation.EQUAL, socks.getCottonPart());
+        List<Socks> actual = service.findByParameters(socks.getColor(), Operation.EQUAL, socks.getCottonPart());
         return ResponseEntity.ok(actual.stream().findFirst());
     }
 
     @GetMapping("/socks")
-    ResponseEntity<OptionalInt> getSocks(@RequestParam String color,
-                                         @RequestParam String operation,
+    ResponseEntity<OptionalInt> getSocks(@RequestParam @NotBlank String color,
+                                         @RequestParam @NotBlank String operation,
                                          @RequestParam @Min(0) @Max(100) byte cottonPart) {
         try {
             Operation actual = Operation.valueOf(operation.toUpperCase());
-            OptionalInt socksCount = service.getNumberSocksByColorAndCottonPart(color, actual, cottonPart);
+            OptionalInt socksCount = service.getNumberSocksByParameters(color, actual, cottonPart);
             return new ResponseEntity<>(socksCount, HttpStatus.OK);
         }catch (IllegalArgumentException e){
             throw new QuantitySocksOutOfBoundsException("Параметры запроса отсутствуют или имеют некорректный формат");

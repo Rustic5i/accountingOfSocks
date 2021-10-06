@@ -17,52 +17,43 @@ import javax.validation.ConstraintViolationException;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler
-    ResponseEntity<SocksIncorrectData> handlerException(QuantitySocksOutOfBoundsException exception){
+    @ExceptionHandler(value = {
+            NullQuantityPointerException.class,
+            QuantitySocksOutOfBoundsException.class
+    })
+    ResponseEntity<SocksIncorrectData> handlerException(RuntimeException exception) {
         SocksIncorrectData data = new SocksIncorrectData();
         data.setInfo(exception.getMessage());
         return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler
-    ResponseEntity<SocksIncorrectData> handlerException(NullQuantityPointerException exception){
-        SocksIncorrectData data = new SocksIncorrectData();
-        data.setInfo(exception.getMessage());
-        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(value = {
+            JsonParseException.class,
+            MissingServletRequestParameterException.class,
+            MethodArgumentTypeMismatchException.class
+    })
+    ResponseEntity<String> handlerException(Exception exception) {
+        return new ResponseEntity<>("Параметры запроса отсутствуют или имеют некорректный формат;", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
-    ResponseEntity<SocksIncorrectData> handlerException(MethodArgumentNotValidException exception){
+    ResponseEntity<SocksIncorrectData> handlerException(MethodArgumentNotValidException exception) {
         SocksIncorrectData data = new SocksIncorrectData();
         data.setInfo(exception.getBindingResult().getAllErrors().get(0).getDefaultMessage());
         return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
-    ResponseEntity<SocksIncorrectData> handlerException (JsonParseException exception){
-        SocksIncorrectData data = new SocksIncorrectData();
-        data.setInfo("Параметры запроса отсутствуют или имеют некорректный формат;");
-        return new ResponseEntity<>(data,HttpStatus.BAD_REQUEST);
-    }
+    ResponseEntity<String> handlerException(ConstraintViolationException exception) {
+        var c = exception.getConstraintViolations().iterator().next();
+        String str = "Параметр "+ c.getPropertyPath()
+                .toString()
+                .substring(c.getPropertyPath()
+                        .toString()
+                        .lastIndexOf(".")+1)+" "+c.getMessage();
 
-    @ExceptionHandler
-    ResponseEntity<SocksIncorrectData> handlerException (MissingServletRequestParameterException exception){
-        SocksIncorrectData data = new SocksIncorrectData();
-        data.setInfo("Параметры запроса отсутствуют или имеют некорректный формат;");
-        return new ResponseEntity<>(data,HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    ResponseEntity<SocksIncorrectData> handlerException (MethodArgumentTypeMismatchException exception){
-        SocksIncorrectData data = new SocksIncorrectData();
-        data.setInfo("Параметры запроса отсутствуют или имеют некорректный формат;");
-        return new ResponseEntity<>(data,HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    ResponseEntity<SocksIncorrectData> handlerException (ConstraintViolationException exception){
         SocksIncorrectData data = new SocksIncorrectData();
         data.setInfo("Процента хлопка не может быть больше 100% или меньше 0%");
-        return new ResponseEntity<>(data,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(str, HttpStatus.BAD_REQUEST);
     }
 }

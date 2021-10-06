@@ -1,7 +1,7 @@
 FROM openjdk:17-jdk-alpine
 EXPOSE 8080
 
-MAINTAINER baeldung.com
+MAINTAINER baratov
 COPY target/accountingOfSocks-0.0.1-SNAPSHOT.jar accountingOfSocks-0.0.1-SNAPSHOT.jar
 ENTRYPOINT ["java","-jar","/accountingOfSocks-0.0.1-SNAPSHOT.jar"]
 
