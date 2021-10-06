@@ -1,9 +1,9 @@
 # accountingOfSocks
 
-Доступные API
-http://80.249.148.36:8080/api/socks/income
-http://80.249.148.36:8080/api/socks/outcome
-http://80.249.148.36:8080/api/socks?color=red&operation=lessThan&cottonPart=99
+### Доступные API
+POST http://80.249.148.36:8080/api/socks/income
+POST http://80.249.148.36:8080/api/socks/outcome
+GET  http://80.249.148.36:8080/api/socks?color=red&operation=lessThan&cottonPart=99
 ## Что нужно сделать
 
 Реализовать приложение для автоматизации учёта носков на складе магазина. Кладовщик должен иметь возможность:
