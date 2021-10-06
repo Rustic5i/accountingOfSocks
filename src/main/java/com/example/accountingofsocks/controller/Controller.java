@@ -42,6 +42,7 @@ public class Controller {
         return ResponseEntity.ok(actual.stream().findFirst());
     }
 
+
     @GetMapping("/socks")
     ResponseEntity<OptionalInt> getSocks(@RequestParam @NotBlank String color,
                                          @RequestParam @NotBlank String operation,
