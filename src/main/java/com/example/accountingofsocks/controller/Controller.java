@@ -30,13 +30,13 @@ public class Controller {
 
     @PostMapping("/socks/income")
     ResponseEntity<Socks> income(@Valid @RequestBody Socks newSocks) {
-        Socks socks = service.save(newSocks);
+        Socks socks = service.income(newSocks);
         return new ResponseEntity<>(socks, HttpStatus.OK);
     }
 
     @PostMapping("/socks/outcome")
     ResponseEntity<Optional<Socks>> outcome(@Valid @RequestBody Socks socks) {
-        service.deleteAllByColorAndCottonPart(socks);
+        service.outcome(socks);
         List<Socks> actual = service.findAllByColorAndCottonPart(socks.getColor(), Operation.EQUAL, socks.getCottonPart());
         return ResponseEntity.ok(actual.stream().findFirst());
     }

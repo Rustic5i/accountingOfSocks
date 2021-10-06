@@ -22,7 +22,7 @@ public class SocksServiceIml implements SocksService {
     }
 
     @Override
-    public Socks save(Socks socks) throws NullQuantityPointerException {
+    public Socks income(Socks socks) throws NullQuantityPointerException {
         List<Socks> socksList = dao.findAllByColorAndCottonPartEquals(socks.getColor(), socks.getCottonPart());
 
         if (socksList.size() != 0) {
@@ -36,7 +36,7 @@ public class SocksServiceIml implements SocksService {
     }
 
     @Override
-    public void deleteAllByColorAndCottonPart(Socks socks) throws QuantitySocksOutOfBoundsException {
+    public void outcome(Socks socks) throws QuantitySocksOutOfBoundsException {
         List<Socks> socksList = dao.findAllByColorAndCottonPartEquals(socks.getColor(), socks.getCottonPart());
         if (socksList.size() != 0) {
             Socks actualSocks = socksList.get(0);

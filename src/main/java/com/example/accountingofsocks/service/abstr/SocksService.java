@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.OptionalInt;
 
 public interface SocksService {
-    Socks save(Socks socks);
+    Socks income(Socks socks);
 
-    void deleteAllByColorAndCottonPart(Socks socks) throws QuantitySocksOutOfBoundsException;
+    void outcome(Socks socks) throws QuantitySocksOutOfBoundsException;
 
     List<Socks> findAllByColorAndCottonPart(String color, Operation operation, byte cottonPart);
 
