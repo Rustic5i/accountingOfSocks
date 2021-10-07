@@ -6,7 +6,7 @@ POST: http://80.249.148.36:8080/api/socks/outcome
 
 GET:  http://80.249.148.36:8080/api/socks?color=red&operation=lessThan&cottonPart=99
 
-###Доступное API на heroku
+### Доступное API на heroku
 
 POST https://accountingofsocks.herokuapp.com/api/socks/income
 
